@@ -8,9 +8,10 @@ ENV LANG en_US.utf8
 from base as build
 RUN apt -y install build-essential autoconf autoconf-archive automake autopoint gettext libssl-dev pkg-config txt2man gzip
 ENV CFLAGS="-m64 -Os -pipe"
+RUN mkdir /build
+WORKDIR /build
 ADD axel /build
-RUN cd /build &&\
-    autoreconf -i &&\
+RUN autoreconf -i &&\
     ./configure --disable-Werror &&\
     make -j$(nproc) &&\
     strip --strip-unneeded axel &&\
